@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Bus QA Instructions Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .loading-spinner {
+            display: none;
+            width: 3rem;
+            height: 3rem;
+            border: 0.25em solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 0.25em solid #007bff;
+            animation: spinner-border 1.5s linear infinite;
+        }
+
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 0.25rem;
+            padding: 0.75rem 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-preview img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .image-preview img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Red Bus QA Instructions Generator</h1>
+        <form id="qaForm" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="input_prompt">Input Prompt:</label>
+                <input type="text" class="form-control" id="input_prompt" name="input_prompt" placeholder="Enter any additional context..." aria-describedby="promptHelp">
+                <small id="promptHelp" class="form-text text-muted">Provide any additional context for generating QA instructions.</small>
+            </div>
+            <div class="form-group">
+                <label for="uploaded_files">Choose Screenshots...</label>
+                <input type="file" class="form-control-file" id="uploaded_files" name="uploaded_files" accept="image/*" multiple aria-describedby="fileHelp">
+                <small id="fileHelp" class="form-text text-muted">Select one or more screenshot images of the Red Bus app.</small>
+            </div>
+            <div class="image-preview" id="imagePreview"></div>
+            <button type="submit" class="btn btn-primary mt-3">Describe Testing Instructions</button>
+            <div class="loading-spinner mt-3" role="status" aria-label="Loading..."></div>
+        </form>
+
+        <div class="mt-5" id="responseSection" style="display:none;">
+            <h3>Generated Testing Instructions:</h3>
+            <pre id="responseText" aria-live="polite"></pre>
+        </div>
+        <div class="mt-3 error-message" id="errorMessage" style="display:none;" role="alert"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        function previewImages(input) {
+            const preview = $('#imagePreview');
+            preview.empty();
+
+            if (input.files) {
+                [...input.files].forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('<img>').attr('src', e.target.result).appendTo(preview);
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        $('#uploaded_files').on('change', function() {
+            previewImages(this);
+        });
+
+        $('#qaForm').on('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            
+            if (formData.getAll('uploaded_files').length === 0) {
+                $('#errorMessage').text('Please upload at least one screenshot.').show();
+                return;
+            }
+
+            $('.loading-spinner').show();
+            $('#errorMessage').hide();
+            $('#responseSection').hide();
+
+            $.ajax({
+                url: '/describe',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $('#responseText').text(data.response_text);
+                    $('#responseSection').show();
+                },
+                error: function(xhr) {
+                    let errorMsg = 'Error generating testing instructions.';
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMsg = xhr.responseJSON.error;
+                    }
+                    $('#errorMessage').text(errorMsg).show();
+                },
+                complete: function() {
+                    $('.loading-spinner').hide();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Bus QA Instructions Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Red Bus QA Instructions Generator</h1>
+        <form id="qaForm" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="input_prompt">Input Prompt:</label>
+                <input type="text" class="form-control" id="input_prompt" name="input_prompt" placeholder="Enter any additional context..." aria-describedby="promptHelp">
+                <small id="promptHelp" class="form-text text-muted">Provide any additional context for generating QA instructions.</small>
+            </div>
+            <div class="form-group">
+                <label for="uploaded_files">Choose Screenshots...</label>
+                <input type="file" class="form-control-file" id="uploaded_files" name="uploaded_files" accept="image/*" multiple aria-describedby="fileHelp">
+                <small id="fileHelp" class="form-text text-muted">Select one or more screenshot images of the Red Bus app.</small>
+            </div>
+            <div class="image-preview" id="imagePreview"></div>
+            <button type="submit" class="btn btn-primary mt-3">Describe Testing Instructions</button>
+            <div class="loading-spinner mt-3" role="status" aria-label="Loading..."></div>
+        </form>
+
+        <div class="mt-5" id="responseSection" style="display:none;">
+            <h3>Generated Testing Instructions:</h3>
+            <pre id="responseText" aria-live="polite"></pre>
+        </div>
+        <div class="mt-3 error-message" id="errorMessage" style="display:none;" role="alert"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+

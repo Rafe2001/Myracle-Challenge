@@ -1,0 +1,8 @@
+# Dependencies
+flask
+langchain
+pillow
+google-generativeai
+python-dotenv
+langchain
+transformers
