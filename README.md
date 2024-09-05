@@ -1,5 +1,7 @@
 # Red Bus QA Instructions Generator
 
+
+
 ## Overview
 This project is a web-based tool designed to automatically generate QA instructions for the Red Bus mobile app. The tool leverages the **Google Gemini API** to analyze both uploaded screenshots and accompanying text input from the user. It generates detailed test cases, including **user flows, pre-conditions, and expected results**, for various app features visible in the screenshots. This can be especially useful for QA engineers who want to streamline the creation of test cases for different app components.
 
