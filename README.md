@@ -79,6 +79,14 @@ This project employs a customized prompting strategy to extract and generate rel
 - Ensuring that the model accurately identifies Red Bus app features from screenshots was critical. We refined the prompt to prioritize correct feature identification before generating test cases.
 - Special attention was given to handling cases where the user input and screenshot context may not perfectly align. For such cases, the tool defaults to analyzing the image and generates test cases based on the visual content.
 
+## Screenshots
+### User Interface:
+![image](https://github.com/user-attachments/assets/1d5b26a4-daab-4bf6-b466-947035605c0e)
+
+### Example Output:
+![image](https://github.com/user-attachments/assets/63bf5fe0-aab2-4139-95f0-d32aa6996d02)
+![image](https://github.com/user-attachments/assets/5b41ba80-3d27-4222-9eb6-a97a1003d8a4)
+
 
 ## Example Test Cases Generated:
 
