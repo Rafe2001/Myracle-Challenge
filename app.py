@@ -50,32 +50,46 @@ def describe():
     uploaded_files = request.files.getlist('uploaded_files')
     
     image_data = prepare_images(uploaded_files)
-    
  
     # Static prompt 
     static_prompt = """
-    You are a QA expert tasked with testing the Red Bus mobile app. 
-    The app allows users to select their travel source, destination, and date, view available buses, choose a seat, and specify pick-up and drop-off points. 
     
-    For each of these features, generate detailed testing instructions, covering:
-    
-    1. User flow and functionality.
-    2. Pre-conditions necessary for testing.
-    3. Step-by-step test instructions, including variations such as invalid inputs and edge cases.
-    4. Expected results for each step.
-    5. Include checks for related features like available offers, sorting filters, and bus information.
+You are a QA expert tasked with generating detailed testing instructions based on screenshots of the Red Bus mobile app. 
+The app includes features for selecting travel source, destination, and date, viewing available buses, choosing seats, and specifying pick-up and drop-off points.
 
-    Ensure that the test cases are thorough, covering both normal and edge case scenarios.
+For each screenshot provided, generate detailed testing instructions following:
 
-    """
+1. Identify the Feature:
+   - Analyze the screenshot to determine which feature of the Red Bus app is displayed (e.g., source/destination selection, bus selection, seat selection, etc.).
+
+2. Generate Test Cases:
+   - User Flow and Functionality: Describe the expected user interaction with the feature shown in the screenshot.
+   - Pre-conditions: List any necessary setup or conditions needed before testing the feature.
+   - Step-by-Step Instructions: Provide clear, step-by-step instructions on how to test the feature. Include variations such as invalid inputs and edge cases if applicable.
+   - Expected Results: Outline what should happen if the feature works correctly.
+
+3. Include Related Features:
+   - If relevant, include checks for related features visible in the screenshot, such as available offers, sorting filters, or bus information.
+
+Ensure that the test cases are thorough, covering both normal and edge case scenarios.
+
+"""
+
 
 
     # response from Gemini API
-    response_text = get_gemini_response(input_prompt, image_data, static_prompt)
+    #response_text = get_gemini_response(input_prompt, image_data, static_prompt)
     
-    return jsonify({'response_text': response_text})
+    #return jsonify({'response_text': response_text})
+    try:
+        response_text = get_gemini_response(input_prompt, image_data, static_prompt)
+        return jsonify({'response_text': response_text})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+
