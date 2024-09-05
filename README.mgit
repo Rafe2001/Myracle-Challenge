@@ -97,4 +97,3 @@ This project employs a customized prompting strategy to extract and generate rel
 4. **Expected Results**:
    - On selecting an available seat, the seat is highlighted, and the user can proceed to payment.
    - On selecting a booked seat, the app should display an error and prevent the user from proceeding.
-
