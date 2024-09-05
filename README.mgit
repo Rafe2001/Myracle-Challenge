@@ -1,1 +1,24 @@
 
+# Red Bus QA Instructions Generator
+
+
+
+## Overview
+This project is a web-based tool designed to generate QA instructions for the Red Bus mobile app. 
+It uses the Google Gemini API to analyze screenshots and text input, providing detailed testing instructions for various app features.
+
+## Features
+- **Upload screenshots** of the Red Bus app.
+- **Provide text context** to enhance the QA instructions.
+- **Automatically generate test cases** including user flow, pre-conditions, and expected results based on the screenshot and input prompt.
+
+## Setup
+### Prerequisites
+- **Python**
+- **Flask Framework**
+- **Google Gemini API Key**
+
+### Steps
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Rafe2001/Myracle-Challenge.git
